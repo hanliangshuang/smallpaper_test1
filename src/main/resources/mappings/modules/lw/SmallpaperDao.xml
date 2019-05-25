@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.lw.dao.SmallpaperDao">
+    
+	<sql id="smallpaperColumns">
+		a.id AS "id",
+		a.xm AS "xm",
+		a.xh AS "xh",
+		a.bt AS "bt",
+		a.shllb AS "shllb",
+		a.sshdw AS "sshdw",
+		a.kysh AS "kysh",
+		a.yjxk AS "yjxk",
+		a.fbfw AS "fbfw",
+		a.fj AS "fj",
+		a.zsh AS "zsh",
+		a.bm AS "bm",
+		a.isbn AS "isbn",
+		a.doi AS "doi",
+		a.hydzh AS "hydzh",
+		a.shlh AS "shlh",
+		a.shfyhylhfb AS "shfyhylhfb",
+		a.xkml AS "xkml",
+		a.xmly AS "xmly",
+		a.lwjchbdw AS "lwjchbdw",
+		a.shftj AS "shftj",
+		a.xxshm AS "xxshm",
+		a.shfwyw AS "shfwyw",
+		a.jqy AS "jqy",
+		a.hymch AS "hymch",
+		a.hyrq AS "hyrq",
+		a.lwfbyy AS "lwfbyy",
+		a.shfydflhfb AS "shfydflhfb",
+		a.c1 AS "c1",
+		a.c2 AS "c2",
+		a.c3 AS "c3",
+		a.c4 AS "c4",
+		a.c5 AS "c5",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="smallpaperJoins">
+	</sql>
+    
+	<select id="get" resultType="Smallpaper">
+		SELECT 
+			<include refid="smallpaperColumns"/>
+		FROM smallpaper a
+		<include refid="smallpaperJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Smallpaper">
+		SELECT 
+			<include refid="smallpaperColumns"/>
+		FROM smallpaper a
+		<include refid="smallpaperJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="xm != null and xm != ''">
+				AND a.xm LIKE 
+					<if test="dbName == 'oracle'">'%'||#{xm}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{xm}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{xm},'%')</if>
+			</if>
+			<if test="xh != null and xh != ''">
+				AND a.xh = #{xh}
+			</if>
+			<if test="bt != null and bt != ''">
+				AND a.bt LIKE 
+					<if test="dbName == 'oracle'">'%'||#{bt}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{bt}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{bt},'%')</if>
+			</if>
+			<if test="shllb != null and shllb != ''">
+				AND a.shllb = #{shllb}
+			</if>
+			<if test="sshdw != null and sshdw != ''">
+				AND a.sshdw = #{sshdw}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Smallpaper">
+		SELECT 
+			<include refid="smallpaperColumns"/>
+		FROM smallpaper a
+		<include refid="smallpaperJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO smallpaper(
+			id,
+			xm,
+			xh,
+			bt,
+			shllb,
+			sshdw,
+			kysh,
+			yjxk,
+			fbfw,
+			fj,
+			zsh,
+			bm,
+			isbn,
+			doi,
+			hydzh,
+			shlh,
+			shfyhylhfb,
+			xkml,
+			xmly,
+			lwjchbdw,
+			shftj,
+			xxshm,
+			shfwyw,
+			jqy,
+			hymch,
+			hyrq,
+			lwfbyy,
+			shfydflhfb,
+			c1,
+			c2,
+			c3,
+			c4,
+			c5,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{xm},
+			#{xh},
+			#{bt},
+			#{shllb},
+			#{sshdw},
+			#{kysh},
+			#{yjxk},
+			#{fbfw},
+			#{fj},
+			#{zsh},
+			#{bm},
+			#{isbn},
+			#{doi},
+			#{hydzh},
+			#{shlh},
+			#{shfyhylhfb},
+			#{xkml},
+			#{xmly},
+			#{lwjchbdw},
+			#{shftj},
+			#{xxshm},
+			#{shfwyw},
+			#{jqy},
+			#{hymch},
+			#{hyrq},
+			#{lwfbyy},
+			#{shfydflhfb},
+			#{c1},
+			#{c2},
+			#{c3},
+			#{c4},
+			#{c5},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE smallpaper SET 	
+			xm = #{xm},
+			xh = #{xh},
+			bt = #{bt},
+			shllb = #{shllb},
+			sshdw = #{sshdw},
+			kysh = #{kysh},
+			yjxk = #{yjxk},
+			fbfw = #{fbfw},
+			fj = #{fj},
+			zsh = #{zsh},
+			bm = #{bm},
+			isbn = #{isbn},
+			doi = #{doi},
+			hydzh = #{hydzh},
+			shlh = #{shlh},
+			shfyhylhfb = #{shfyhylhfb},
+			xkml = #{xkml},
+			xmly = #{xmly},
+			lwjchbdw = #{lwjchbdw},
+			shftj = #{shftj},
+			xxshm = #{xxshm},
+			shfwyw = #{shfwyw},
+			jqy = #{jqy},
+			hymch = #{hymch},
+			hyrq = #{hyrq},
+			lwfbyy = #{lwfbyy},
+			shfydflhfb = #{shfydflhfb},
+			c1 = #{c1},
+			c2 = #{c2},
+			c3 = #{c3},
+			c4 = #{c4},
+			c5 = #{c5},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE smallpaper SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>
