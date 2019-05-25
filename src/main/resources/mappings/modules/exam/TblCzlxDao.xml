@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.exam.dao.TblCzlxDao">
+    
+	<sql id="tblCzlxColumns">
+		a.id AS "id",
+		a.fk_zhgh AS "fkZhgh",
+		a.czlb AS "czlb",
+		a.czshj AS "czshj",
+		a.czshch AS "czshch",
+		a.czgch AS "czgch",
+		a.fk_kshbh AS "fkkshbh"
+	</sql>
+	
+	<sql id="tblCzlxJoins">
+	</sql>
+    
+	<select id="get" resultType="TblCzlx">
+		SELECT 
+			<include refid="tblCzlxColumns"/>
+		FROM tbl_czlx a
+		<include refid="tblCzlxJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="TblCzlx">
+		SELECT 
+			<include refid="tblCzlxColumns"/>
+		FROM tbl_czlx a
+		<include refid="tblCzlxJoins"/>
+		<where>
+			
+			<if test="czlb != null and czlb != ''">
+				AND a.czlb = #{czlb}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="TblCzlx">
+		SELECT 
+			<include refid="tblCzlxColumns"/>
+		FROM tbl_czlx a
+		<include refid="tblCzlxJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO tbl_czlx(
+			id,
+			fk_zhgh,
+			czlb,
+			czshj,
+			czshch,
+			czgch
+		) VALUES (
+			#{id},
+			#{fkZhgh},
+			#{czlb},
+			#{czshj},
+			#{czshch},
+			#{czgch}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE tbl_czlx SET 	
+			fk_zhgh = #{fkZhgh},
+			czlb = #{czlb},
+			czshj = #{czshj},
+			czshch = #{czshch},
+			czgch = #{czgch}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM tbl_czlx
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

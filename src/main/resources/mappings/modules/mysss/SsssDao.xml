@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.mysss.dao.SsssDao">
+    
+	<sql id="ssssColumns">
+		a.id AS "id",
+		a.name AS "name",
+		a.age AS "age",
+		a.xb AS "xb",
+		a.bm AS "bm",
+		a.create_by AS "createBy",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="ssssJoins">
+	</sql>
+    
+	<select id="get" resultType="Ssss">
+		SELECT 
+			<include refid="ssssColumns"/>
+		FROM ssss a
+		<include refid="ssssJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Ssss">
+		SELECT 
+			<include refid="ssssColumns"/>
+		FROM ssss a
+		<include refid="ssssJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="name != null and name != ''">
+				AND a.name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+			<if test="age != null and age != ''">
+				AND a.age = #{age}
+			</if>
+			<if test="xb != null and xb != ''">
+				AND a.xb = #{xb}
+			</if>
+			<if test="bm != null and bm != ''">
+				AND a.bm LIKE 
+					<if test="dbName == 'oracle'">'%'||#{bm}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{bm}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{bm},'%')</if>
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Ssss">
+		SELECT 
+			<include refid="ssssColumns"/>
+		FROM ssss a
+		<include refid="ssssJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO ssss(
+			id,
+			name,
+			age,
+			xb,
+			bm,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{name},
+			#{age},
+			#{xb},
+			#{bm},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE ssss SET 	
+			name = #{name},
+			age = #{age},
+			xb = #{xb},
+			bm = #{bm}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE ssss SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<select id="findexits" resultType="Ssss">
+		SELECT 
+			<include refid="ssssColumns"/>
+		FROM ssss a
+		<include refid="ssssJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="name != null and name != ''">
+				AND a.name = #{name}
+			</if>
+			<if test="id != null and id != ''">
+				AND a.id = #{id}
+			</if>
+		</where>		
+		
+	</select>
+	
+</mapper>

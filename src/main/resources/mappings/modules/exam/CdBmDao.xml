@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.exam.dao.CdBmDao">
+    
+	<sql id="cdBmColumns">
+		a.id AS "id",
+		a.px AS "px",
+		a.bmmch AS "bmmch",
+		a.bmzh AS "bmzh"
+	</sql>
+	
+	<sql id="cdBmJoins">
+	</sql>
+    
+	<select id="get" resultType="CdBm">
+		SELECT 
+			<include refid="cdBmColumns"/>
+		FROM cd_bm a
+		<include refid="cdBmJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="CdBm">
+		SELECT 
+			<include refid="cdBmColumns"/>
+		FROM cd_bm a 
+		<include refid="cdBmJoins"/>
+		<where>
+			
+			<if test="px != null and px != ''">
+				AND a.px = #{px}
+			</if>
+			<if test="bmmch != null and bmmch != ''">
+				AND a.bmmch = #{bmmch}
+			</if>
+			<if test="bmzh != null and bmzh != ''">
+				AND a.bmzh = #{bmzh}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.px
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="CdBm">
+		SELECT 
+			<include refid="cdBmColumns"/>
+		FROM cd_bm a
+		<include refid="cdBmJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO cd_bm(
+			id,
+			px,
+			bmmch,
+			bmzh
+		) VALUES (
+			#{id},
+			#{px},
+			#{bmmch},
+			#{bmzh}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE cd_bm SET 	
+			px = #{px},
+			bmmch = #{bmmch},
+			bmzh = #{bmzh}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM cd_bm
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

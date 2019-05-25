@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.exam.dao.TblZhgDao">
+    
+	<sql id="tblZhgColumns">
+		a.id AS "id",
+		a.zhgh AS "zhgh",
+		a.zhgxm AS "zhgxm",
+		a.xb AS "xb",
+		a.bm AS "bm",
+		a.xtshj AS "xtshj"
+	</sql>
+	
+	<sql id="tblZhgJoins">
+	</sql>
+    
+	<select id="get" resultType="TblZhg">
+		SELECT 
+			<include refid="tblZhgColumns"/>
+		FROM tbl_zhg a
+		<include refid="tblZhgJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="TblZhg">
+		SELECT 
+			<include refid="tblZhgColumns"/>
+		FROM tbl_zhg a
+		<include refid="tblZhgJoins"/>
+		<where>
+			
+			<if test="zhgh != null and zhgh != ''">
+				AND a.zhgh = #{zhgh}
+			</if>
+			<if test="zhgxm != null and zhgxm != ''">
+				AND a.zhgxm = #{zhgxm}
+			</if>
+			<if test="xb != null and xb != ''">
+				AND a.xb = #{xb}
+			</if>
+			<if test="bm != null and bm != ''">
+				AND a.bm = #{bm}
+			</if>
+			<if test="beginXtshj != null and endXtshj != null and beginXtshj != '' and endXtshj != ''">
+				AND a.xtshj BETWEEN #{beginXtshj} AND #{endXtshj}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.XTShJ DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="TblZhg">
+		SELECT 
+			<include refid="tblZhgColumns"/>
+		FROM tbl_zhg a
+		<include refid="tblZhgJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO tbl_zhg(
+			id,
+			zhgh,
+			zhgxm,
+			xb,
+			bm,
+			xtshj
+		) VALUES (
+			#{id},
+			#{zhgh},
+			#{zhgxm},
+			#{xb},
+			#{bm},
+			#{xtshj}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE tbl_zhg SET 	
+			zhgh = #{zhgh},
+			zhgxm = #{zhgxm},
+			xb = #{xb},
+			bm = #{bm},
+			xtshj = #{xtshj}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM tbl_zhg
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

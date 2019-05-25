@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.exam.dao.TblPxkshchjDao">
+    
+	<sql id="tblPxkshchjColumns">
+		a.id AS "id",
+		a.fk_zhgh AS "fkZhgh",
+		a.fk_kshbh AS "fkKshbh",
+		a.kshshj AS "kshshj",
+		a.ksysh AS "ksysh",
+		a.jl AS "jl",
+		a.pgcsh AS "pgcsh",
+		a.dgcsh AS "dgcsh",
+		a.chny AS "chny",
+		a.chzhy AS "chzhy",
+		a.chwy AS "chwy",
+		a.shfdt AS "shfdt",
+		a.kshchj AS "kshchj",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="tblPxkshchjJoins">
+	</sql>
+    
+	<select id="get" resultType="TblPxkshchj">
+		SELECT 
+			a.*,czlx.CZGCh czgc,zhg.ZhGXM zhgxmxsh
+		FROM tbl_pxkshchj a
+		left join tbl_czlx czlx on a.FK_ZhGH = czlx.FK_ZhGH and a.FK_KShBH = czlx.FK_KShBH
+		left join tbl_zhg zhg on a.FK_ZhGH = zhg.ZhGH 
+		<include refid="tblPxkshchjJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="TblPxkshchj">
+		
+		SELECT 
+			a.*,zhg.ZhGXM zhgxmxsh,zhg.BM zhgbmxsh
+		FROM tbl_pxkshchj a 
+		left join tbl_zhg zhg on a.FK_ZhGH = zhg.ZhGH 
+		
+		
+		<!-- SELECT 
+			<include refid="tblPxkshchjColumns"/>
+		FROM tbl_pxkshchj a
+		<include refid="tblPxkshchjJoins"/>
+		 -->
+		
+		
+		<!-- SELECT 
+			a.*,czlx.CZGCh czgc,zhg.ZhGXM zhgxmxsh
+		FROM tbl_pxkshchj a
+		left join tbl_czlx czlx on a.FK_ZhGH = czlx.FK_ZhGH 
+		left join tbl_zhg zhg on a.FK_ZhGH = zhg.ZhGH  -->
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="fkZhgh != null and fkZhgh != ''">
+				AND a.fk_zhgh = #{fkZhgh}
+			</if>
+			<if test="fkKshbh != null and fkKshbh != ''">
+				AND a.fk_kshbh = #{fkKshbh}
+			</if>
+			<if test="jl != null and jl != ''">
+				AND a.jl = #{jl}
+			</if>
+			<if test="kshchj != null and kshchj != ''">
+				AND a.kshchj = #{kshchj}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.KShShJ DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="TblPxkshchj">
+		SELECT 
+			<include refid="tblPxkshchjColumns"/>
+		FROM tbl_pxkshchj a
+		<include refid="tblPxkshchjJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO tbl_pxkshchj(
+			id,
+			fk_zhgh,
+			fk_kshbh,
+			kshshj,
+			ksysh,
+			jl,
+			pgcsh,
+			dgcsh,
+			chny,
+			chzhy,
+			chwy,
+			shfdt,
+			kshchj,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{fkZhgh},
+			#{fkKshbh},
+			#{kshshj},
+			#{ksysh},
+			#{jl},
+			#{pgcsh},
+			#{dgcsh},
+			#{chny},
+			#{chzhy},
+			#{chwy},
+			#{shfdt},
+			#{kshchj},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE tbl_pxkshchj SET 	
+			fk_zhgh = #{fkZhgh},
+			fk_kshbh = #{fkKshbh},
+			kshshj = #{kshshj},
+			ksysh = #{ksysh},
+			jl = #{jl},
+			pgcsh = #{pgcsh},
+			dgcsh = #{dgcsh},
+			chny = #{chny},
+			chzhy = #{chzhy},
+			chwy = #{chwy},
+			shfdt = #{shfdt},
+			kshchj = #{kshchj},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE tbl_pxkshchj SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

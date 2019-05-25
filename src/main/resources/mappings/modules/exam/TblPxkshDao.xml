@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.exam.dao.TblPxkshDao">
+    
+	<sql id="tblPxkshColumns">
+		a.id AS "id",
+		a.kshbh AS "kshbh",
+		a.zfzh AS "zfzh",
+		a.czshch AS "czshch",
+		a.kfzh AS "kfzh",
+		a.shfqy AS "shfqy",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="tblPxkshJoins">
+	</sql>
+    
+	<select id="get" resultType="TblPxksh">
+		SELECT 
+			<include refid="tblPxkshColumns"/>
+		FROM tbl_pxksh a
+		<include refid="tblPxkshJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="TblPxksh">
+		SELECT 
+			<include refid="tblPxkshColumns"/>
+		FROM tbl_pxksh a 
+		<include refid="tblPxkshJoins"/>
+		<where>
+			
+			<if test="kshbh != null and kshbh != ''">
+				AND a.kshbh = #{kshbh}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="TblPxksh">
+		SELECT 
+			<include refid="tblPxkshColumns"/>
+		FROM tbl_pxksh a
+		<include refid="tblPxkshJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO tbl_pxksh(
+			id,
+			kshbh,
+			zfzh,
+			czshch,
+			kfzh,
+			shfqy,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{kshbh},
+			#{zfzh},
+			#{czshch},
+			#{kfzh},
+			#{shfqy},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE tbl_pxksh SET 	
+			kshbh = #{kshbh},
+			zfzh = #{zfzh},
+			czshch = #{czshch},
+			kfzh = #{kfzh},
+			shfqy = #{shfqy},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM tbl_pxksh
+		WHERE id = #{id}
+	</update>
+	
+</mapper>
